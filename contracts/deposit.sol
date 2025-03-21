@@ -8,6 +8,7 @@ contract SoloPatty {
     address public owner;
     mapping(address => mapping(address => uint256)) public balances; // user => token => amount
     bytes32 public merkleRoot; // Root of Merkle Tree for compressed balances
+    mapping(bytes32 => bool) public hasClaimed;
 
     event Deposited(
         address indexed user,
@@ -66,6 +67,9 @@ contract SoloPatty {
     ) external {
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender, token, amount));
         require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
+        require(!hasClaimed[leaf], "Already claimed");
+    
+        hasClaimed[leaf] = true;
 
         IERC20(token).transfer(msg.sender, amount);
 
