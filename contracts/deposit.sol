@@ -49,16 +49,17 @@ contract SoloPatty {
 
     /// @notice Users withdraw funds via Merkle proof (TEE must provide them a proof)
     function withdrawTokensWithAttestation(
+        address user,
         address token,
         uint256 amount,
         bytes32[] calldata proof
     ) external {
-        bytes32 leaf = keccak256(abi.encodePacked(msg.sender, token, amount));
+        bytes32 leaf = keccak256(abi.encodePacked(user, token, amount));
         require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
         require(!hasClaimed[leaf], "Already claimed");
 
         hasClaimed[leaf] = true;
-        IERC20(token).transfer(msg.sender, amount);
+        IERC20(token).transfer(user, amount);
 
         emit Withdrawn(msg.sender, token, amount);
     }
