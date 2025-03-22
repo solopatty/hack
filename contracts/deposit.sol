@@ -2,11 +2,10 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 contract SoloPatty {
-    using ECDSA for bytes32;
-
     address public immutable owner;
     address public immutable trustedSigner;
     bytes32 public merkleRoot;
@@ -41,8 +40,6 @@ contract SoloPatty {
         emit Deposited(msg.sender, token, amount);
     }
 
-   
-
     /// @notice Users withdraw funds with a signed message from the TEE
     function withdrawTokensWithSignature(
         address user,
@@ -51,8 +48,8 @@ contract SoloPatty {
         bytes memory signature
     ) external {
         bytes32 leaf = keccak256(abi.encodePacked(user, token, amount));
-        bytes32 ethHash = leaf.toEthSignedMessageHash();
-        address recovered = ethHash.recover(signature);
+        bytes32 ethHash = MessageHashUtils.toEthSignedMessageHash(leaf);
+        address recovered = ECDSA.recover(ethHash, signature);
         require(recovered == trustedSigner, "Invalid TEE signature");
         require(!hasClaimed[leaf], "Already claimed");
 
