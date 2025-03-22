@@ -1,8 +1,11 @@
-import type { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox-viem";
+require("@nomicfoundation/hardhat-toolbox")
 
-const config: HardhatUserConfig = {
-  solidity: "0.8.28",
-};
-
-export default config;
+module.exports = {
+  solidity: "0.8.20",
+  networks: {
+    arbitrumSepolia: {
+      url: "https://sepolia-rollup.arbitrum.io/rpc",
+      accounts: [process.env.PRIVATE_KEY],
+    },
+  },
+}
