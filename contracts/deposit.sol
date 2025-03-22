@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.28;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract SoloPatty {
-    address public owner;
-    bytes32 public merkleRoot; // Latest TEE state root
+    using ECDSA for bytes32;
+
+    address public immutable owner;
+    address public immutable trustedSigner;
+    bytes32 public merkleRoot;
     mapping(bytes32 => bool) public hasClaimed;
 
     event Deposited(
@@ -21,46 +24,40 @@ contract SoloPatty {
     );
     event MerkleRootUpdated(bytes32 newRoot);
 
+    constructor(address _trustedSigner) {
+        owner = msg.sender;
+        trustedSigner = _trustedSigner;
+    }
+
     modifier onlyOwner() {
         require(msg.sender == owner, "Not authorized");
         _;
     }
 
-    constructor() {
-        owner = msg.sender;
-    }
-
-    /// @notice User deposits tokens into the contract (TEE reads this off-chain)
+    /// @notice Users deposit tokens into the contract (TEE listens off-chain)
     function depositTokens(address token, uint256 amount) external {
         require(amount > 0, "Invalid amount");
         IERC20(token).transferFrom(msg.sender, address(this), amount);
         emit Deposited(msg.sender, token, amount);
     }
 
-    /// @notice TEE posts a new root after matching logic + balance updates
-    function updateMerkleRoot(
-        bytes32 newRoot,
-        bytes memory attestation
-    ) external onlyOwner {
-        // TODO: Add attestation verification for production (SGX or signature check)
-        merkleRoot = newRoot;
-        emit MerkleRootUpdated(newRoot);
-    }
+   
 
-    /// @notice Users withdraw funds via Merkle proof (TEE must provide them a proof)
-    function withdrawTokensWithAttestation(
+    /// @notice Users withdraw funds with a signed message from the TEE
+    function withdrawTokensWithSignature(
         address user,
         address token,
         uint256 amount,
-        bytes32[] calldata proof
+        bytes memory signature
     ) external {
         bytes32 leaf = keccak256(abi.encodePacked(user, token, amount));
-        require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
+        bytes32 ethHash = leaf.toEthSignedMessageHash();
+        address recovered = ethHash.recover(signature);
+        require(recovered == trustedSigner, "Invalid TEE signature");
         require(!hasClaimed[leaf], "Already claimed");
 
         hasClaimed[leaf] = true;
         IERC20(token).transfer(user, amount);
-
-        emit Withdrawn(msg.sender, token, amount);
+        emit Withdrawn(user, token, amount);
     }
 }
