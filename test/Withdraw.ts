@@ -1,7 +1,7 @@
 // test/withdraw.test.ts
 import { expect } from "chai"
 import { ethers } from "hardhat"
-import { SoloPatty, TestERC20 } from "../typechain-types"
+import { SoloPatty } from "../typechain-types"
 import { Wallet } from "ethers"
 
 const TEE_PRIVATE_KEY =
@@ -17,8 +17,8 @@ describe("SoloPatty TEE Withdrawal Test", function () {
     const [deployer, u1] = await ethers.getSigners()
     user = u1
 
-    const Token = await ethers.getContractFactory("TestERC20")
-    await token.deploy("MockToken", "MTK", 18)
+    const Token = await ethers.getContractFactory("SimpleToken")
+    token = await Token.deploy("MockToken", "MTK", 18)
     await token.deployed()
     await token.mint(user.address, 1_000_000)
 
