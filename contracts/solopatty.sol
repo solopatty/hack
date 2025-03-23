@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
@@ -20,7 +20,6 @@ contract SoloPatty {
         address indexed token,
         uint256 amount
     );
-    event MerkleRootUpdated(bytes32 newRoot);
 
     constructor(address _trustedSigner) {
         owner = msg.sender;

@@ -2,7 +2,7 @@ require("@nomicfoundation/hardhat-toolbox")
 require("dotenv").config() // Load environment variables
 
 module.exports = {
-  solidity: "0.8.28",
+  solidity: "0.8.20",
   networks: {
     sepolia: {
       url: "https://eth-sepolia.g.alchemy.com/v2/6gbfHkcrH1gSsMG8dQYbCK7WPtA1oNBy",
