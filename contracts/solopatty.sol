@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 contract SoloPatty {
     address public immutable owner;
     address public immutable trustedSigner;
-    bytes32 public merkleRoot;
     mapping(bytes32 => bool) public hasClaimed;
 
     event Deposited(
