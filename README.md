@@ -5,19 +5,19 @@ This project is a Solidity-based token system using the Hardhat development envi
 ## 📜 Contracts Deployed
 
 ### 🍔 Patty Token
-- **Address:** [`0x126F0c11F3e5EafE37AB143D4AA688429ef7DCB3`](https://sepolia.etherscan.io/address/0x126F0c11F3e5EafE37AB143D4AA688429ef7DCB3)
+- **Address:** [`0xCAdaFeDf40140C8eBCa3A0E802dfC4dD72869c9F`](https://sepolia.etherscan.io/address/0xCAdaFeDf40140C8eBCa3A0E802dfC4dD72869c9F)
 - **Description:** Core token in the SoloPatty system, representing the foundational layer of the patty structure.
 
 ### 🥬 Lettuce Token
-- **Address:** [`0xF7aE103AacD84641Fa0c43860C23a8Cf7cE5DB5a`](https://sepolia.etherscan.io/address/0xF7aE103AacD84641Fa0c43860C23a8Cf7cE5DB5a)
+- **Address:** [`0xa966bdf941ea2eccc8ADC453B977FFeE27bC2f55`](https://sepolia.etherscan.io/address/0xa966bdf941ea2eccc8ADC453B977FFeE27bC2f55)
 - **Description:** Auxiliary token representing freshness or a feature enhancer — like lettuce in a burger analogy.
 
 ### 🧀 Cheese Token
-- **Address:** [`0x5D7714751FAf22a96F7D2eAC15304839242cF8c0`](https://sepolia.etherscan.io/address/0x5D7714751FAf22a96F7D2eAC15304839242cF8c0)
+- **Address:** [`0xC9EbB17FC1f5101Db84EA345693194c520b411bb`](https://sepolia.etherscan.io/address/0xC9EbB17FC1f5101Db84EA345693194c520b411bb)
 - **Description:** Complementary token for added richness — cheese symbolizes premium features or additional value.
 
 ### 🔄 SoloPatty Contract
-- **Address:** [`0xCB30D0881119bA8837A9e26E298d3b73c4c521EC`](https://sepolia.etherscan.io/address/0xCB30D0881119bA8837A9e26E298d3b73c4c521EC)
+- **Address:** [`0x5De6e7cAE4b30d4CbF744B6Dd78c6418F5750570`](https://sepolia.etherscan.io/address/0x5De6e7cAE4b30d4CbF744B6Dd78c6418F5750570)
 - **Description:** The orchestrator smart contract that interacts with Patty, Lettuce, and Cheese tokens to enable composability, swaps, or bundled logic within the SoloPatty ecosystem.
 
 ---
